@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "thatsillegal",
+  "version": "${version}",
+
+  "name": "That's Illegal",
+  "description": "A Minecraft mod that allows banning items from use in the player crafting slots/crafting table. Items can be banned from crafting use on specific dimensions or on all dimensions. The mod was designed to work server side only, but a client opening the game to LAN can have it too.",
+  "authors": [
+    "Levoment"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0",
+  "icon": "assets/thatsillegal/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.levoment.thatsillegal.ThatsIllegalMod"
+    ],
+    "modmenu": [
+      "com.github.levoment.thatsillegal.ThatsIllegalModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "thatsillegal.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.1",
+    "java": ">=16"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

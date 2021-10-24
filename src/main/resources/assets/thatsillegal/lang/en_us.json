@@ -1,0 +1,8 @@
+{
+    "text.autoconfig.thatsillegal.title": "That's Illegal Mod Configuration",
+    "text.autoconfig.thatsillegal.option.ScreenMessage" : "Screen Message",
+    "text.autoconfig.thatsillegal.option.ChatMessageSegment1" : "Chat message segment 1",
+    "text.autoconfig.thatsillegal.option.ChatMessageSegment2" : "Chat message segment 2",
+    "text.autoconfig.thatsillegal.option.DisplayScreenMessage" : "Display Screen Message",
+    "text.autoconfig.thatsillegal.option.DisplayChatMessage" : "Display Chat Message"
+}
