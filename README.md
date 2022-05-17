@@ -44,7 +44,7 @@ configurable on the server side configuration of the mod.
 `/thatsillegal banned items` - this command will show items that are banned from being 
 picked up by a player in their respective dimensions
 
-`thatsillegal banned crafting_ingredients` - can be used to get a list of 
+`/thatsillegal banned crafting_ingredients` - can be used to get a list of 
 items that are banned as crafting ingredients in their respective dimensions. 
 An example of what is displayed when running this command is:
 
