@@ -39,13 +39,14 @@ configurable on the server side configuration of the mod.
 
 ![That's Illegal Example Message](./Screenshots/ScreenMessagesExample.png)
 
-The command: 
+### Commands: 
 
-### `/thatsillegal_banned_items`
+`/thatsillegal banned items` - this command will show items that are banned from being 
+picked up by a player in their respective dimensions
 
-can be used to get a list of 
-items that are banned. An example of what is displayed 
-when running this command is:
+`thatsillegal banned crafting_ingredients` - can be used to get a list of 
+items that are banned as crafting ingredients in their respective dimensions. 
+An example of what is displayed when running this command is:
 
 ![That's Illegal Command To List Banned Items Example](./Screenshots/ListOfBannedItemsCommandExample.png)
 
