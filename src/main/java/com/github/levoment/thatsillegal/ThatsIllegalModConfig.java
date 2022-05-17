@@ -12,6 +12,7 @@ public class ThatsIllegalModConfig implements ConfigData {
     String ScreenMessage = "That's Illegal";
     String ChatMessageSegment1 = "The item";
     String ChatMessageSegment2 = "cannot be used to craft in this dimension";
+    String ChatMessageSegment3 = "cannot be used in this dimension";
 
     boolean DisplayScreenMessage = true;
     boolean DisplayChatMessage = true;

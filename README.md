@@ -68,16 +68,23 @@ The default json file looks like this
 ```json
 {
   "DimensionBannedItems": {
-    "dimensionItems": {
+    "CraftingBannedIngredients": {
       "minecraft:overworld": [],
+      "all_dimensions": [],
       "minecraft:the_nether": [],
-      "minecraft:the_end": [],
-      "all_dimensions": []
+      "minecraft:the_end": []
+    },
+    "FullyBannedItems": {
+      "minecraft:overworld": [],
+      "all_dimensions": [],
+      "minecraft:the_nether": [],
+      "minecraft:the_end": []
     }
   },
   "ScreenMessage": "That\u0027s Illegal",
   "ChatMessageSegment1": "The item",
   "ChatMessageSegment2": "cannot be used to craft in this dimension",
+  "ChatMessageSegment3": "cannot be used in this dimension",
   "DisplayScreenMessage": true,
   "DisplayChatMessage": true
 }
@@ -87,45 +94,58 @@ a player's crafting slots, you need the item **identifier** with **namespace**
 included on the identifier. 
 
 In the example below the item **Stone** 
-is banned in **The Nether** dimension whereas the items **Enderpearl** 
-and **Vine** are banned in all dimensions.
+is banned from use as a crafting item in **The Nether** dimension whereas the 
+item **Diamond** is banned as a crafting ingredient in all dimensions.
+
+The item **Ender Pearl** on the other hand is banned from being picked up at all by a 
+player in the **Overworld** only.
 
 ```json
 {
   "DimensionBannedItems": {
-    "dimensionItems": {
+    "CraftingBannedIngredients": {
       "minecraft:overworld": [],
-      "minecraft:the_nether": [
-        "minecraft:stone"
+      "all_dimensions": ["minecraft:diamond"],
+      "minecraft:the_nether": ["minecraft:stone"],
+      "minecraft:the_end": []
+    },
+    "FullyBannedItems": {
+      "minecraft:overworld": [
+        "minecraft:ender_pearl"
       ],
-      "minecraft:the_end": [],
-      "all_dimensions": [
-        "minecraft:ender_pearl",
-        "minecraft:vine"
-      ]
+      "all_dimensions": [],
+      "minecraft:the_nether": [],
+      "minecraft:the_end": []
     }
   },
   "ScreenMessage": "That\u0027s Illegal",
   "ChatMessageSegment1": "The item",
   "ChatMessageSegment2": "cannot be used to craft in this dimension",
+  "ChatMessageSegment3": "cannot be used in this dimension",
   "DisplayScreenMessage": true,
   "DisplayChatMessage": true
 }
 ```
 
 **ScreenMessage** - is the message that will display on the player's screen 
-when the player attempts to craft with the banned item in a vanilla 
-crafting table or vanilla crafting slots
+when the player attempts to craft with a banned ingredient in a vanilla 
+crafting table or vanilla crafting slots or attempts to pick up a banned item
+from the world or a vanilla inventory like a chest
 
 **ChatMessageSegment1** - is a segment of the message that will display 
 on the player's chat
-when the player attempts to craft with the banned item in a vanilla
+when the player attempts to craft with a banned ingredient in a vanilla
 crafting table or vanilla crafting slots
 
 **ChatMessageSegment2** - is another segment of the message that will display
 on the player's chat
-when the player attempts to craft with the banned item in a vanilla
+when the player attempts to craft with a banned ingredient in a vanilla
 crafting table or vanilla crafting slots
+
+**ChatMessageSegment3** - is another segment of the message that will display
+on the player's chat
+when the player attempts to pick up a banned item from the world or 
+a vanilla inventory like a chest
 
 **DisplayScreenMessage** - is an option to decide whether the server 
 will send the player a message to display on their **screen** 

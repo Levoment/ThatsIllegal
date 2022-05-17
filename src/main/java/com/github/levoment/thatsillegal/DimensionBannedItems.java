@@ -1,6 +1,5 @@
 package com.github.levoment.thatsillegal;
 
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -9,13 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 public class DimensionBannedItems {
-    Map<String, List<String>> dimensionItems = new HashMap<>();
+    Map<String, List<String>> CraftingBannedIngredients = new HashMap<>();
+    Map<String, List<String>> FullyBannedItems = new HashMap<>();
 
     public DimensionBannedItems() {
         // Create the default structure of this object for the Json
-        dimensionItems.put(World.OVERWORLD.getValue().toString(), new ArrayList<>());
-        dimensionItems.put(World.NETHER.getValue().toString(), new ArrayList<>());
-        dimensionItems.put(World.END.getValue().toString(), new ArrayList<>());
-        dimensionItems.put("all_dimensions", new ArrayList<>());
+        CraftingBannedIngredients.put(World.OVERWORLD.getValue().toString(), new ArrayList<>());
+        CraftingBannedIngredients.put(World.NETHER.getValue().toString(), new ArrayList<>());
+        CraftingBannedIngredients.put(World.END.getValue().toString(), new ArrayList<>());
+        CraftingBannedIngredients.put("all_dimensions", new ArrayList<>());
+
+        FullyBannedItems.put(World.OVERWORLD.getValue().toString(), new ArrayList<>());
+        FullyBannedItems.put(World.NETHER.getValue().toString(), new ArrayList<>());
+        FullyBannedItems.put(World.END.getValue().toString(), new ArrayList<>());
+        FullyBannedItems.put("all_dimensions", new ArrayList<>());
     }
 }

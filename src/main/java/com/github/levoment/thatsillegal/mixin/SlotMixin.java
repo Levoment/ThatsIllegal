@@ -1,13 +1,11 @@
 package com.github.levoment.thatsillegal.mixin;
 
 import com.github.levoment.thatsillegal.ThatsIllegalMod;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
-import net.minecraft.screen.CraftingScreenHandler;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -15,46 +13,33 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@Mixin(CraftingInventory.class)
-public class CraftingInventoryMixin {
-    @Shadow @Final
-    private ScreenHandler handler;
+@Mixin(Slot.class)
+public class SlotMixin {
 
-    @Inject(method = "setStack(ILnet/minecraft/item/ItemStack;)V", at = @At("HEAD"), cancellable = true)
-    public void setStackCallback(int slot, ItemStack stack, CallbackInfo callbackInfo) {
-        // If the screen handler is an instance of PlayerScreenHandler
-        if (this.handler instanceof PlayerScreenHandler playerScreenHandler) {
-            // If the PlayerScreenHandler is on the server
-            if (((PlayerScreenHandlerPlayerAccessor) playerScreenHandler).getOwner() instanceof ServerPlayerEntity) {
-                ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) ((PlayerScreenHandlerPlayerAccessor) this.handler).getOwner();
-                if (CheckForBannedItem(stack, serverPlayerEntity)) callbackInfo.cancel();
-            }
-        }
-        if (this.handler instanceof CraftingScreenHandler craftingScreenHandler) {
-            // If the PlayerScreenHandler is on the server
-            if ((((CraftingScreenHandlerPlayerAccessor) craftingScreenHandler).getPlayer() instanceof ServerPlayerEntity)) {
-                ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) ((CraftingScreenHandlerPlayerAccessor) this.handler).getPlayer();
-                if (CheckForBannedItem(stack, serverPlayerEntity)) callbackInfo.cancel();
+    @Inject(method = "canTakeItems(Lnet/minecraft/entity/player/PlayerEntity;)Z", at = @At("HEAD"), cancellable = true)
+    public void canTakeItemsCallback(PlayerEntity playerEntity, CallbackInfoReturnable<Boolean> cir) {
+        if (playerEntity instanceof ServerPlayerEntity serverPlayerEntity) {
+            Slot currentSlot = (Slot)((Object)this);
+            if (!currentSlot.getStack().isEmpty()) {
+                cir.setReturnValue(!checkForBannedItems(currentSlot.getStack(), serverPlayerEntity));
             }
         }
     }
 
-    private boolean CheckForBannedItem(ItemStack stack, ServerPlayerEntity serverPlayerEntity) {
+    private boolean checkForBannedItems(ItemStack stack, ServerPlayerEntity serverPlayerEntity) {
         // Get the current dimension identifier
         Identifier dimensionIdentifier = serverPlayerEntity.world.getRegistryKey().getValue();
         // Get the list containing the banned items for the dimension the player is in
-        List<Item> bannedItemsInTheCurrentDimension = ThatsIllegalMod.MAP_OF_BANNED_ITEMS.get(dimensionIdentifier.getNamespace() + ":" + dimensionIdentifier.getPath());
+        List<Item> bannedItemsInTheCurrentDimension = ThatsIllegalMod.MAP_OF_FULLY_BANNED_ITEMS.get(dimensionIdentifier.getNamespace() + ":" + dimensionIdentifier.getPath());
         // Get a list of banned items for all dimensions
-        List<Item> listOfAllDimensionsBannedItems = ThatsIllegalMod.MAP_OF_BANNED_ITEMS.get("all_dimensions");
+        List<Item> listOfAllDimensionsBannedItems = ThatsIllegalMod.MAP_OF_FULLY_BANNED_ITEMS.get("all_dimensions");
 
         // If the list of items for the current dimension and all_dimensions is not null
         if (bannedItemsInTheCurrentDimension != null && listOfAllDimensionsBannedItems != null) {
@@ -66,7 +51,7 @@ public class CraftingInventoryMixin {
                 Text textToDisplay = new LiteralText(ThatsIllegalMod.ScreenMessage).formatted(Formatting.GOLD);
                 // Create the messages for the chat
                 String secondText = new TranslatableText(ThatsIllegalMod.ChatMessageSegment1).getString();
-                String thirdText = new TranslatableText(ThatsIllegalMod.ChatMessageSegment2).getString();
+                String thirdText = new TranslatableText(ThatsIllegalMod.ChatMessageSegment3).getString();
 
                 // If the configuration is set to display a screen message
                 if (ThatsIllegalMod.DisplayScreenMessage) {
@@ -83,8 +68,6 @@ public class CraftingInventoryMixin {
                     // Send the message to the player chat
                     serverPlayerEntity.sendSystemMessage(chatMessage, Util.NIL_UUID);
                 }
-                // Drop the item randomly
-                serverPlayerEntity.dropItem(stack, true, true);
                 return true;
             }
         } else {
