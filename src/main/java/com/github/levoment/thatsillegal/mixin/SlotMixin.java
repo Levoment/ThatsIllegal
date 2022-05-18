@@ -4,15 +4,14 @@ import com.github.levoment.thatsillegal.ThatsIllegalMod;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,10 +47,10 @@ public class SlotMixin {
                 // Update the messages
                 ThatsIllegalMod.UpdateConfig();
                 // Create the text to display
-                Text textToDisplay = new LiteralText(ThatsIllegalMod.ScreenMessage).formatted(Formatting.GOLD);
+                Text textToDisplay = Text.of(ThatsIllegalMod.ScreenMessage).getWithStyle(Style.EMPTY.withFormatting(Formatting.GOLD)).get(0);
                 // Create the messages for the chat
-                String secondText = new TranslatableText(ThatsIllegalMod.ChatMessageSegment1).getString();
-                String thirdText = new TranslatableText(ThatsIllegalMod.ChatMessageSegment3).getString();
+                String secondText = Text.translatable(ThatsIllegalMod.ChatMessageSegment1).getString();
+                String thirdText = Text.translatable(ThatsIllegalMod.ChatMessageSegment3).getString();
 
                 // If the configuration is set to display a screen message
                 if (ThatsIllegalMod.DisplayScreenMessage) {
@@ -64,9 +63,9 @@ public class SlotMixin {
                 // If the configuration is set to display a chat message
                 if (ThatsIllegalMod.DisplayChatMessage) {
                     // Create the chat message
-                    Text chatMessage = new LiteralText("[§5That's Illegal Mod§r] " + "§6"+ secondText + " §c" + stack.getItem().getName().getString() + " §6" + thirdText).formatted(Formatting.BOLD);
+                    Text chatMessage = Text.of("[§5That's Illegal Mod§r] " + "§6"+ secondText + " §c" + stack.getItem().getName().getString() + " §6" + thirdText).getWithStyle(Style.EMPTY.withFormatting(Formatting.BOLD)).get(0);
                     // Send the message to the player chat
-                    serverPlayerEntity.sendSystemMessage(chatMessage, Util.NIL_UUID);
+                    serverPlayerEntity.sendMessage(chatMessage, MessageType.SYSTEM);
                 }
                 return true;
             }

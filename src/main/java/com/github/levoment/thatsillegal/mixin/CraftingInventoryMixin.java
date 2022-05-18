@@ -4,17 +4,16 @@ import com.github.levoment.thatsillegal.ThatsIllegalMod;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -63,10 +62,10 @@ public class CraftingInventoryMixin {
                 // Update the messages
                 ThatsIllegalMod.UpdateConfig();
                 // Create the text to display
-                Text textToDisplay = new LiteralText(ThatsIllegalMod.ScreenMessage).formatted(Formatting.GOLD);
+                Text textToDisplay = Text.of(ThatsIllegalMod.ScreenMessage).getWithStyle(Style.EMPTY.withFormatting(Formatting.GOLD)).get(0);
                 // Create the messages for the chat
-                String secondText = new TranslatableText(ThatsIllegalMod.ChatMessageSegment1).getString();
-                String thirdText = new TranslatableText(ThatsIllegalMod.ChatMessageSegment2).getString();
+                String secondText = Text.translatable(ThatsIllegalMod.ChatMessageSegment1).getString();
+                String thirdText = Text.translatable(ThatsIllegalMod.ChatMessageSegment2).getString();
 
                 // If the configuration is set to display a screen message
                 if (ThatsIllegalMod.DisplayScreenMessage) {
@@ -79,9 +78,9 @@ public class CraftingInventoryMixin {
                 // If the configuration is set to display a chat message
                 if (ThatsIllegalMod.DisplayChatMessage) {
                     // Create the chat message
-                    Text chatMessage = new LiteralText("[§5That's Illegal Mod§r] " + "§6"+ secondText + " §c" + stack.getItem().getName().getString() + " §6" + thirdText).formatted(Formatting.BOLD);
+                    Text chatMessage = Text.of("[§5That's Illegal Mod§r] " + "§6"+ secondText + " §c" + stack.getItem().getName().getString() + " §6" + thirdText).getWithStyle(Style.EMPTY.withFormatting(Formatting.BOLD)).get(0);
                     // Send the message to the player chat
-                    serverPlayerEntity.sendSystemMessage(chatMessage, Util.NIL_UUID);
+                    serverPlayerEntity.sendMessage(chatMessage, MessageType.SYSTEM);
                 }
                 // Drop the item randomly
                 serverPlayerEntity.dropItem(stack, true, true);

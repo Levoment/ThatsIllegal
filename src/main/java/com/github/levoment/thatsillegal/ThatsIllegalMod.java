@@ -9,13 +9,12 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.item.Item;
+import net.minecraft.network.MessageType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -123,9 +122,10 @@ public class ThatsIllegalMod implements ModInitializer, DedicatedServerModInitia
 			}
 		}
 		// Create the chat message
-		Text chatMessage = new LiteralText("[§5That's Illegal Mod§r] " + messageString);
+		Text chatMessage = Text.of("[§5That's Illegal Mod§r] " + messageString);
 		// Send the message to the player chat
-		serverPlayerEntity.sendSystemMessage(chatMessage, Util.NIL_UUID);
+		serverPlayerEntity.sendMessage(chatMessage, MessageType.SYSTEM);
+		// serverPlayerEntity.sendSystemMessage(chatMessage, Util.NIL_UUID);
 		return 1;
 	}
 
@@ -152,9 +152,9 @@ public class ThatsIllegalMod implements ModInitializer, DedicatedServerModInitia
 			}
 		}
 		// Create the chat message
-		Text chatMessage = new LiteralText("[§5That's Illegal Mod§r] " + messageString);
+		Text chatMessage = Text.of("[§5That's Illegal Mod§r] " + messageString);
 		// Send the message to the player chat
-		serverPlayerEntity.sendSystemMessage(chatMessage, Util.NIL_UUID);
+		serverPlayerEntity.sendMessage(chatMessage, MessageType.SYSTEM);
 		return 1;
 	}
 }
