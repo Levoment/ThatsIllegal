@@ -6,10 +6,10 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.item.Item;
-import net.minecraft.network.MessageType;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -60,17 +60,17 @@ public class ThatsIllegalMod implements ModInitializer, DedicatedServerModInitia
 
 
 		// Register the command to display items banned from being used as crafting ingredients
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-					dispatcher.register(CommandManager.literal("thatsillegal")
-							.then(CommandManager.literal("banned").then(CommandManager.literal("crafting_ingredients")
-									.executes(ThatsIllegalMod.this::executeBannedCraftingItemsCommand))));
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
+			dispatcher.register(CommandManager.literal("thatsillegal")
+					.then(CommandManager.literal("banned").then(CommandManager.literal("crafting_ingredients")
+							.executes(ThatsIllegalMod.this::executeBannedCraftingItemsCommand))));
 				}
 		);
 
 		// Register the command to display fully banned items
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-					dispatcher.register(CommandManager.literal("thatsillegal")
-							.then(CommandManager.literal("banned").then(CommandManager.literal("items")
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
+			dispatcher.register(CommandManager.literal("thatsillegal")
+					.then(CommandManager.literal("banned").then(CommandManager.literal("items")
 							.executes(ThatsIllegalMod.this::executeBannedItemsCommand))));
 				}
 		);
